@@ -56,6 +56,7 @@ local function handle_mouse_press(button, x, y)
             error();
         else
             term.setCursorPos(22, 3);
+            term.setBackgroundColor(colors.red);
             term.write("invalid!");
         end
     end
