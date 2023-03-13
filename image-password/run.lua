@@ -5,6 +5,8 @@ paintutils.drawFilledBox(1, 1, size_x, size_y, colors.black);
 local center_x = math.floor(size_x / 2);
 local center_y = math.floor(size_y / 2);
 
+local is_mouse_down = false;
+
 local enter_text = "[accept]"
 
 local password_grid, input_grid = util.grids(password);
@@ -62,7 +64,17 @@ local function handle_mouse_press(button, x, y)
     end
 end
 draw_enter_button();
-while true do
-    local event, button, x, y = os.pullEvent("mouse_click");
+
+local function listen_mouse_click()
+    local _, button, x, y = os.pullEvent("mouse_click");
     handle_mouse_press(button, x, y)
+end
+
+local function listen_mouse_drag()
+    local _, button, x, y = os.pullEvent("mouse_drag");
+    handle_mouse_press(button, x, y)
+end
+
+while true do
+    parallel.waitForAny(listen_mouse_drag, listen_mouse_click)
 end
